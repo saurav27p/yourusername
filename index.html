@@ -1,8 +1,1866 @@
----
-layout: default
-title: Home
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade 10 Computer Science — DBMS and File Handling using Pandas</title>
 
-<h1>Welcome to my site</h1>
-<p>This content is automatically wrapped inside _layouts/default.html!</p>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']],
+    processEscapes: true
+  },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 
+<style>
+  :root {
+    --ink: #000;
+    --paper: #fff;
+    --rule: #000;
+    --shade: #f2f2f2;
+    --code-bg: #f7f7f7;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 17px;
+    line-height: 1.85;
+    padding: 0 0 80px 0;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 48px 60px 48px;
+  }
+
+  header.doc-head {
+    border-bottom: 3px solid var(--rule);
+    padding-bottom: 18px;
+    margin-bottom: 34px;
+  }
+
+  header.doc-head .kicker {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+    margin: 0 0 8px 0;
+  }
+
+  header.doc-head h1 {
+    font-size: 30px;
+    line-height: 1.25;
+    margin: 0 0 6px 0;
+    font-weight: 700;
+  }
+
+  header.doc-head p.sub {
+    margin: 0;
+    font-size: 15px;
+    font-style: italic;
+  }
+
+  h1.unit {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 24px;
+    letter-spacing: 0.3px;
+    border-top: 4px solid var(--rule);
+    border-bottom: 2px solid var(--rule);
+    padding: 14px 0;
+    margin: 70px 0 30px 0;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.3px;
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 7px;
+    margin: 50px 0 22px 0;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px;
+    margin: 36px 0 14px 0;
+    page-break-after: avoid;
+  }
+
+  h4 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    margin: 26px 0 10px 0;
+    page-break-after: avoid;
+  }
+
+  p { margin: 0 0 16px 0; }
+
+  .tutor {
+    font-style: italic;
+    border-left: 3px solid var(--rule);
+    padding: 6px 0 6px 16px;
+    margin: 20px 0 22px 0;
+  }
+
+  .tutor .lead {
+    font-style: normal;
+    font-weight: 700;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+
+  .cracker {
+    font-style: italic;
+    margin: 18px 0 20px 0;
+  }
+
+  .cracker .lead {
+    font-style: normal;
+    font-weight: 700;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+
+  ul, ol { margin: 0 0 18px 0; padding-left: 26px; }
+  li { margin-bottom: 8px; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 22px 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 14.5px;
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    border: 1px solid var(--rule);
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: var(--shade);
+    font-weight: 700;
+  }
+
+  td.c { text-align: center; }
+
+  pre.code {
+    background: var(--code-bg);
+    border-left: 4px solid var(--rule);
+    padding: 14px 18px;
+    margin: 18px 0 8px 0;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    page-break-inside: avoid;
+  }
+
+  pre.output {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 12px 18px;
+    margin: 0 0 24px 0;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    page-break-inside: avoid;
+  }
+
+  pre.output::before {
+    content: "Output:";
+    display: block;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 11.5px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .q {
+    margin: 30px 0 12px 0;
+    font-weight: 700;
+  }
+
+  .qnum {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+  }
+
+  .ans-label {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .final {
+    border-left: 5px solid var(--rule);
+    padding: 8px 0 8px 18px;
+    margin: 20px 0 30px 0;
+    font-weight: 700;
+  }
+
+  .toc {
+    border: 2px solid var(--rule);
+    padding: 20px 26px;
+    margin: 30px 0 40px 0;
+  }
+
+  .toc h4 {
+    margin-top: 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+  }
+
+  .toc ol { margin-bottom: 0; }
+  .toc a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted #666; }
+
+  hr.sep {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 44px 0;
+  }
+
+  @media print {
+    body { font-size: 12pt; }
+    .page { max-width: 100%; padding: 0 12mm; }
+    pre.code, pre.output, table { page-break-inside: avoid; }
+    a { color: #000; text-decoration: none; }
+  }
+
+  @media (max-width: 640px) {
+    .page { padding: 24px 18px 40px 18px; }
+    body { font-size: 16px; }
+    header.doc-head h1 { font-size: 24px; }
+    table { font-size: 13px; }
+    pre.code, pre.output { font-size: 13px; }
+  }
+</style>
+</head>
+
+<body>
+<div class="page">
+
+<header class="doc-head">
+  <p class="kicker">Grade 10 · Computer Science · Notes and Tutor</p>
+  <h1>Database Management System and File Handling using Pandas</h1>
+  <p class="sub">Concept-first notes, tutor guidance and fully worked exercises.</p>
+</header>
+
+<div class="toc">
+  <h4>Contents</h4>
+  <ol>
+    <li><a href="#u1">Unit 1 — Database Management System</a></li>
+    <li><a href="#ex1">Exercise Set 1 — DBMS (Fully Worked)</a></li>
+    <li><a href="#u2">Unit 2 — File Handling using Pandas</a></li>
+    <li><a href="#ex2">Exercise Set 2 — File Handling (Fully Worked)</a></li>
+  </ol>
+</div>
+
+<!-- ============================================================ -->
+<!-- UNIT 1 — DBMS -->
+<!-- ============================================================ -->
+
+<h1 class="unit" id="u1">Unit 1 — Database Management System</h1>
+
+<h2>1.1 Data, Information and the Idea of a Database</h2>
+
+<p>Every system that stores records faces the same problem. Information arrives in pieces, and those pieces need to be kept in a form that can be found again, changed when necessary, and protected from confusion. A school knows this well. Names arrive on admission forms, marks arrive after each exam, fees arrive monthly. If each of these lives in a separate paper file, answering a simple question like "which students in Class 10 have not paid this month's fee" requires opening three files and comparing them by hand.</p>
+
+<p>A database solves this by storing related facts together in an organised structure. The facts themselves, taken individually and without context, are called <strong>data</strong>. A row of numbers like 2082, 95, Binay means nothing on its own. Once those numbers are arranged and interpreted, they become <strong>information</strong>: Binay scored 95 marks in the year 2082 and is one of the top performers.</p>
+
+<p class="cracker"><span class="lead">Concept cracker.</span> Data is the raw material; information is the finished product. Processing is what turns one into the other. If your answer to "what is the difference between data and information" mentions context or meaning, you have the mark.</p>
+
+<p>A <strong>database</strong> is an organised collection of related data that can be stored, searched, updated and retrieved efficiently. In modern practice, databases are held on computers, though the idea long predates them. A library catalogue, a hospital register, a telephone directory are all databases in the ordinary sense. What makes computerised databases powerful is speed and scale: they can search millions of rows in less time than it takes to blink.</p>
+
+<h3>Why paper files and spreadsheets eventually fail</h3>
+
+<p>Before computerised databases, records were kept in <strong>traditional file systems</strong>: paper registers or simple digital files, one file per purpose. These work at small scale but break down in three predictable ways.</p>
+
+<ul>
+  <li><strong>Duplication.</strong> The same student's name and address are written again and again in the admission file, the fees file, the exam file. If the address changes, it must be updated everywhere, and any file missed becomes wrong.</li>
+  <li><strong>Inconsistency.</strong> Once duplicates exist, they drift apart. The fees file says one address, the exam file another. No one knows which is correct.</li>
+  <li><strong>Difficulty of searching across files.</strong> A question that spans two files requires manual comparison. At scale this becomes impossible.</li>
+</ul>
+
+<p class="tutor"><span class="lead">Tutor's tip.</span> When you are asked in an exam to justify a database over a spreadsheet, do not simply say "a database is better". Name the specific problem it removes. Duplication, inconsistency and the cost of cross-file searching are the three safe answers, and one example of each is enough for full marks.</p>
+
+<h2>1.2 Database Management System (DBMS)</h2>
+
+<p>A database by itself is just stored facts. To use those facts, something must sit between the user and the storage and translate requests into action. That something is the <strong>Database Management System</strong>.</p>
+
+<p>A DBMS is software that allows users to create, store, retrieve, update and delete data in a structured way while enforcing rules about who may do what. It is the layer that makes a database safe, consistent and usable. Common examples are MySQL, Oracle Database, Microsoft SQL Server, PostgreSQL, MongoDB and SQLite.</p>
+
+<p class="cracker"><span class="lead">Concept cracker.</span> Think of a library. The books are the database. The librarian who knows the catalogue, checks your membership, and fetches the right book is the DBMS. You never walk into the shelves yourself; you ask the librarian, and the librarian enforces the rules.</p>
+
+<h3>What a DBMS does</h3>
+
+<ol>
+  <li><strong>Data storage.</strong> Holds data in tables of rows and columns.</li>
+  <li><strong>Data retrieval.</strong> Finds rows quickly using simple commands.</li>
+  <li><strong>Data manipulation.</strong> Supports inserting new rows, updating existing ones and deleting unwanted ones.</li>
+  <li><strong>Data integrity.</strong> Enforces rules so that only valid data is accepted. A phone number field will not accept letters.</li>
+  <li><strong>Redundancy control.</strong> Minimises duplication by centralising storage and encouraging normalisation.</li>
+  <li><strong>Security.</strong> Controls who may see or change what.</li>
+  <li><strong>Backup and recovery.</strong> Keeps data safe and restorable after failure.</li>
+  <li><strong>Concurrent access.</strong> Allows many users to work at the same time without corrupting each other's changes.</li>
+</ol>
+
+<h3>Advantages of a DBMS</h3>
+
+<ul>
+  <li>Greatly reduced duplication and inconsistency.</li>
+  <li>Fast retrieval even from very large stores.</li>
+  <li>Centralised control of security and access.</li>
+  <li>Backup and recovery are built in.</li>
+  <li>Multiple users and applications can share the same data.</li>
+  <li>Integrity rules are enforced automatically rather than by hand.</li>
+</ul>
+
+<h3>Disadvantages of a DBMS</h3>
+
+<ul>
+  <li>Setup and licensing cost, especially for commercial systems.</li>
+  <li>Requires trained staff to design, tune and maintain.</li>
+  <li>Complex systems need regular maintenance and monitoring.</li>
+  <li>Performance can degrade with extremely large datasets if poorly designed.</li>
+  <li>If the system fails and backups are poor, the whole organisation may lose access at once.</li>
+</ul>
+
+<p class="tutor"><span class="lead">Tutor's tip.</span> In five-mark questions on advantages and disadvantages, quality beats quantity. Name three advantages and three disadvantages, each with one sentence of explanation. Do not list ten points with no explanation; examiners award marks for reasoning, not for volume.</p>
+
+<h2>1.3 Relational Database Management System (RDBMS)</h2>
+
+<p>An <strong>RDBMS</strong> is a DBMS that stores data in tables and links those tables using shared fields called keys. The word relational does not mean "related" in the everyday sense; it means the data is arranged in relations, which is the formal term for tables.</p>
+
+<p>What makes an RDBMS special is that a fact is stored once and referred to elsewhere by key. A student's name lives in the Students table. The Library table does not repeat the name; it stores the student's ID, which points back to the Students table. Change the name in one place and every reference sees the new value.</p>
+
+<p>MySQL, Oracle, PostgreSQL and Microsoft SQL Server are all RDBMSs. MySQL is the example used throughout this unit.</p>
+
+<h2>1.4 Tables, Fields and Records</h2>
+
+<p>A <strong>table</strong> is the basic container of an RDBMS. It organises data into rows and columns, each column holding one kind of fact and each row holding one complete entry.</p>
+
+<table>
+  <tr>
+    <th>StudentID</th>
+    <th>Name</th>
+    <th>Class</th>
+    <th>DateOfBirth</th>
+  </tr>
+  <tr><td class="c">101</td><td>Binay Adhikari</td><td class="c">10</td><td class="c">2010-03-12</td></tr>
+  <tr><td class="c">102</td><td>Subigya Nepal</td><td class="c">10</td><td class="c">2011-07-25</td></tr>
+  <tr><td class="c">103</td><td>Aarambha Gharti</td><td class="c">9</td><td class="c">2013-11-10</td></tr>
+</table>
+
+<p>A <strong>field</strong> is a column. StudentID, Name, Class and DateOfBirth are the four fields of this table. Each field is defined to hold one type of data: StudentID holds numbers, Name holds text, DateOfBirth holds dates.</p>
+
+<p>A <strong>record</strong> is a row. The row containing 101, Binay Adhikari, 10 and 2010-03-12 is one record: the complete information about one student.</p>
+
+<p class="cracker"><span class="lead">Concept cracker.</span> Fields run vertically and describe what kind of fact is being stored. Records run horizontally and describe one instance of that fact. If you can point at a column and say what it holds, that column is a field. If you can point at a row and say whose data it is, that row is a record.</p>
+
+<h2>1.5 Keys</h2>
+
+<p>Keys are columns used to identify rows uniquely and to link tables together. Three kinds matter for Grade 10.</p>
+
+<h3>Primary key</h3>
+
+<p>A <strong>primary key</strong> is a field, or combination of fields, that uniquely identifies every record in a table. It cannot be repeated and it cannot be empty. In the Students table above, StudentID is the primary key.</p>
+
+<p>Rules of a primary key:</p>
+<ul>
+  <li>Every value must be unique across the table.</li>
+  <li>No value may be NULL.</li>
+  <li>Each table may have only one primary key.</li>
+</ul>
+
+<h3>Foreign key</h3>
+
+<p>A <strong>foreign key</strong> is a field in one table that refers to the primary key of another table. It creates the link between the two tables and ensures that only valid references are entered.</p>
+
+<p>Consider a Library table that records which student borrowed which book.</p>
+
+<table>
+  <tr><th>BookID</th><th>BookTitle</th><th>StudentID (Foreign Key)</th></tr>
+  <tr><td class="c">B_01</td><td>Nepali History</td><td class="c">201</td></tr>
+  <tr><td class="c">B_02</td><td>Database Basics</td><td class="c">201</td></tr>
+  <tr><td class="c">B_03</td><td>Learn Python</td><td class="c">202</td></tr>
+</table>
+
+<p>Here StudentID is a foreign key pointing to the StudentID primary key of the Students table. If someone tries to record a loan to student 999 who does not exist, the database refuses the entry. This is how integrity is preserved across tables.</p>
+
+<h3>Composite key</h3>
+
+<p>A <strong>composite key</strong> is a key made of two or more fields combined, used when no single field is unique on its own.</p>
+
+<table>
+  <tr><th>StudentID</th><th>Subject</th><th>Marks</th></tr>
+  <tr><td class="c">301</td><td>Nepali</td><td class="c">85</td></tr>
+  <tr><td class="c">301</td><td>Social</td><td class="c">92</td></tr>
+  <tr><td class="c">302</td><td>Computer</td><td class="c">95</td></tr>
+</table>
+
+<p>Neither StudentID nor Subject alone identifies a row, because student 301 appears twice and subject Nepali appears once but could appear again. The combination of StudentID and Subject is unique, so together they form a composite key.</p>
+
+<p class="tutor"><span class="lead">Tutor's tip.</span> When asked to identify a primary key in a table, look for the field whose value would never repeat and would never be blank. Name is a poor primary key because two students may share a name. Date of birth is a poor primary key because two students may share a birthday. A roll number or student ID is almost always the right answer.</p>
+
+<h2>1.6 Data Types in SQL</h2>
+
+<p>Every column in a table is declared with a <strong>data type</strong>. The data type tells the database what kind of value the column may hold and how much space to reserve. Choosing correctly prevents errors and saves space.</p>
+
+<h3>Numeric types</h3>
+
+<table>
+  <tr><th>Type</th><th>Purpose</th></tr>
+  <tr><td>INT</td><td>Whole numbers.</td></tr>
+  <tr><td>SMALLINT</td><td>Whole numbers with a smaller range.</td></tr>
+  <tr><td>BIGINT</td><td>Whole numbers with a very large range.</td></tr>
+  <tr><td>DECIMAL(p, s)</td><td>Exact numbers with decimal points. \(p\) is the total number of digits and \(s\) the number after the decimal.</td></tr>
+  <tr><td>FLOAT</td><td>Approximate decimals, useful for very large or very small values.</td></tr>
+</table>
+
+<h3>Character types</h3>
+
+<table>
+  <tr><th>Type</th><th>Purpose</th></tr>
+  <tr><td>CHAR(n)</td><td>Fixed-length text of exactly \(n\) characters.</td></tr>
+  <tr><td>VARCHAR(n)</td><td>Variable-length text up to \(n\) characters.</td></tr>
+  <tr><td>TEXT</td><td>Long blocks of text such as paragraphs.</td></tr>
+</table>
+
+<p>The difference between CHAR and VARCHAR matters. CHAR(10) always stores ten characters, padding with spaces if the value is shorter. VARCHAR(10) stores only as many characters as are actually entered, up to ten. For names of varying length, VARCHAR is the better choice.</p>
+
+<h3>Date and time types</h3>
+
+<table>
+  <tr><th>Type</th><th>Purpose</th></tr>
+  <tr><td>DATE</td><td>Date only, for example 2047-07-06.</td></tr>
+  <tr><td>TIME</td><td>Time only, for example 14:30:00.</td></tr>
+  <tr><td>DATETIME</td><td>Date and time together.</td></tr>
+  <tr><td>TIMESTAMP</td><td>Like DATETIME, often used to record when an event happened.</td></tr>
+</table>
+
+<h3>Boolean type</h3>
+
+<table>
+  <tr><th>Type</th><th>Purpose</th></tr>
+  <tr><td>BOOLEAN</td><td>Stores TRUE or FALSE.</td></tr>
+</table>
+
+<p class="tutor"><span class="lead">Tutor's tip.</span> When you write a CREATE TABLE statement, decide the data type by asking what the column will hold. A phone number looks numeric but should be VARCHAR, because it may begin with a zero and is never used in arithmetic. A roll number is INT because it is used in arithmetic and comparison. These two choices catch many students.</p>
+
+<h2>1.7 SQL Constraints</h2>
+
+<p><strong>Constraints</strong> are rules attached to columns that restrict what values may be entered. They protect data integrity by rejecting anything that violates the rule.</p>
+
+<table>
+  <tr><th>Constraint</th><th>Effect</th></tr>
+  <tr><td>PRIMARY KEY</td><td>Uniquely identifies each row. No duplicates, no NULLs.</td></tr>
+  <tr><td>FOREIGN KEY</td><td>Links a column to the primary key of another table.</td></tr>
+  <tr><td>NOT NULL</td><td>Forbids empty values in the column.</td></tr>
+  <tr><td>UNIQUE</td><td>Ensures all values in the column are different from each other.</td></tr>
+  <tr><td>CHECK</td><td>Limits values to those satisfying a condition.</td></tr>
+  <tr><td>DEFAULT</td><td>Supplies a value automatically when none is given.</td></tr>
+</table>
+
+<p>Constraints matter because they stop bad data at the gate. If a column is declared NOT NULL, the database refuses to save a row without a value there. If a column has a CHECK constraint limiting marks to between 0 and 100, an attempt to enter 150 fails immediately. Without constraints, the same errors would be caught much later, if at all.</p>
+
+<h2>1.8 SQL and Its Sublanguages</h2>
+
+<p><strong>SQL</strong>, pronounced "sequel", stands for Structured Query Language. It was developed at IBM in the 1970s and is the standard language for communicating with relational databases. A <strong>query</strong> is simply a request sent to the database, written in SQL.</p>
+
+<p>SQL is divided into sublanguages according to what they do.</p>
+
+<h3>DDL — Data Definition Language</h3>
+
+<p>DDL statements define and change the structure of the database: its tables, columns and constraints. DDL commands are committed automatically; once executed, the change is permanent and cannot be rolled back.</p>
+
+<table>
+  <tr><th>Command</th><th>Purpose</th></tr>
+  <tr><td>CREATE</td><td>Creates a new database, table, view or index.</td></tr>
+  <tr><td>ALTER</td><td>Changes the structure of an existing table, for example adds a column.</td></tr>
+  <tr><td>DROP</td><td>Deletes a database object permanently, including its data.</td></tr>
+  <tr><td>TRUNCATE</td><td>Removes all rows from a table but keeps the structure.</td></tr>
+  <tr><td>RENAME</td><td>Changes the name of a table or column.</td></tr>
+</table>
+
+<h3>DML — Data Manipulation Language</h3>
+
+<p>DML statements work on the data inside the tables, not on the structure. DML changes can be rolled back unless committed.</p>
+
+<table>
+  <tr><th>Command</th><th>Purpose</th></tr>
+  <tr><td>INSERT</td><td>Adds new rows.</td></tr>
+  <tr><td>SELECT</td><td>Retrieves rows.</td></tr>
+  <tr><td>UPDATE</td><td>Modifies existing rows.</td></tr>
+  <tr><td>DELETE</td><td>Removes rows.</td></tr>
+</table>
+
+<p class="cracker"><span class="lead">Concept cracker.</span> DDL changes the shape of the container. DML changes what is inside the container. If the command would still make sense on an empty table, it is DDL. If it needs rows to do anything, it is DML.</p>
+
+<h3>The critical difference between DELETE and TRUNCATE</h3>
+
+<p>Both remove rows, but they are not the same.</p>
+
+<ul>
+  <li><strong>DELETE</strong> removes selected rows according to a WHERE condition. It can be rolled back. It fires any triggers attached to the table. It is slower on large tables because it logs each row individually.</li>
+  <li><strong>TRUNCATE</strong> removes all rows in one operation, ignoring any condition. It cannot be rolled back in most databases. It does not fire triggers. It is much faster on large tables.</li>
+</ul>
+
+<p>If the question says "remove some rows", the answer is DELETE. If it says "remove all rows but keep the table structure", the answer is TRUNCATE.</p>
+
+<h2>1.9 Basic SQL Statements</h2>
+
+<h3>Creating a database and using it</h3>
+
+<pre class="code">CREATE DATABASE school;
+USE school;</pre>
+
+<p>The first statement creates an empty database named school. The second selects it so that subsequent statements work inside it.</p>
+
+<h3>Creating a table</h3>
+
+<pre class="code">CREATE TABLE students (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Class INT NOT NULL,
+    DOB DATE
+);</pre>
+
+<p>This creates a table with four columns. ID is the primary key. Class cannot be empty. The other two accept values of the stated types.</p>
+
+<h3>Inserting rows</h3>
+
+<pre class="code">INSERT INTO students (ID, Name, Class, DOB)
+VALUES (1, 'Dikshya Pokhrel', 10, '2007-11-13');</pre>
+
+<h3>Retrieving rows</h3>
+
+<pre class="code">SELECT * FROM students;
+SELECT Name, Class FROM students;
+SELECT Name, DOB FROM students WHERE Class = 10;</pre>
+
+<p>The asterisk means all columns. Naming columns retrieves only those columns. The WHERE clause filters rows to those satisfying the condition.</p>
+
+<h3>Updating rows</h3>
+
+<pre class="code">UPDATE students
+SET Class = 11
+WHERE ID = 5;</pre>
+
+<p>The WHERE clause is essential. Without it, the update would apply to every row in the table, which is almost never what is intended.</p>
+
+<h3>Deleting rows</h3>
+
+<pre class="code">DELETE FROM students WHERE Name = 'Biraj';</pre>
+
+<p>Again the WHERE clause decides which rows are removed. Without it, every row is deleted.</p>
+
+<p class="tutor"><span class="lead">Tutor's tip.</span> Two habits prevent most SQL mistakes. First, always write the WHERE clause before running an UPDATE or DELETE, even in your head, and check that it selects only the rows you intend to change. Second, when a question asks you to change data, ask yourself whether you are changing the structure or the contents. Changing the structure means ALTER, changing contents means UPDATE.</p>
+
+<h2>1.10 The WHERE and LIKE Clauses</h2>
+
+<p>The <strong>WHERE</strong> clause filters rows by a condition. Without it, a SELECT returns every row in the table.</p>
+
+<pre class="code">SELECT Name, DOB FROM students WHERE Class = 10;</pre>
+
+<p>The <strong>LIKE</strong> clause filters by pattern rather than exact value. It uses two wildcards.</p>
+
+<ul>
+  <li><strong>%</strong> matches any sequence of characters, including none.</li>
+  <li><strong>_</strong> matches exactly one character.</li>
+</ul>
+
+<pre class="code">SELECT Name, Class FROM students WHERE Name LIKE 'A%';
+-- matches names beginning with A
+
+UPDATE students SET Class = 12 WHERE Name LIKE '_man';
+-- matches names of four letters ending in "man", such as Aman
+
+DELETE FROM students WHERE Name LIKE '%esh';
+-- matches names ending in "esh", such as Rajesh</pre>
+
+<p class="tutor"><span class="lead">Tutor's tip.</span> The wildcard symbol is the one students most often mix up. Remember that % stands for many or none, and _ stands for exactly one. If the question says "names starting with S", use 'S%'. If it says "names of exactly four letters", use '____' with four underscores.</p>
+
+<h2>1.11 Database Relationships</h2>
+
+<p>Tables in an RDBMS are linked to each other through keys. The link is called a relationship, and there are three standard kinds.</p>
+
+<h3>One-to-one (1:1)</h3>
+
+<p>Each record in one table is associated with exactly one record in another. This is uncommon because it usually means the two tables could have been merged, but it is useful when a small part of the data is sensitive or rarely used and benefits from being kept separate.</p>
+
+<p>Example: a Person and a Passport. Each person has at most one passport, and each passport belongs to one person.</p>
+
+<h3>One-to-many (1:M)</h3>
+
+<p>One record in the first table is associated with many records in the second, but each record in the second is associated with only one in the first. This is by far the most common relationship.</p>
+
+<p>Example: a Teacher and Classes. One teacher may teach many classes, but each class is taught by one teacher.</p>
+
+<h3>Many-to-many (M:M)</h3>
+
+<p>Many records in one table are associated with many records in the other. This relationship cannot be stored directly in two tables; it requires a third table, called a junction table, which holds pairs of keys.</p>
+
+<p>Example: Students and Courses. A student may enrol in many courses, and each course may have many students. A junction table Enrolments stores one row per student-course pair.</p>
+
+<p class="cracker"><span class="lead">Concept cracker.</span> Read the relationship in both directions. Start at the first table and ask "how many of the second can one of these touch?" Then start at the second and ask the same. If one-to-many both ways, the relationship is many-to-many. If many-to-one both ways, it is one-to-one.</p>
+
+<h2>1.12 MySQL Workbench and the Practical Workflow</h2>
+
+<p>MySQL Workbench is the graphical interface used to work with MySQL. It provides a place to write queries, see results in a grid and inspect the structure of tables. The workflow for any practical question follows the same order.</p>
+
+<ol>
+  <li>Create the database with CREATE DATABASE.</li>
+  <li>Select it with USE.</li>
+  <li>Create the table with CREATE TABLE, specifying data types and constraints.</li>
+  <li>Insert rows with INSERT INTO.</li>
+  <li>Query, update or delete as the question requires.</li>
+</ol>
+
+<p class="tutor"><span class="lead">Tutor's tip.</span> If you run a query and get an error about an unknown database, you have forgotten USE. If you get an error about a table not existing, check spelling and capitalisation. SQL keywords are not case-sensitive, but table names are on some systems. Pick a convention, such as lowercase for tables and uppercase for keywords, and stay with it.</p>
+
+<h2>1.13 Reports in MySQL</h2>
+
+<p>A <strong>report</strong> is the organised presentation of data retrieved from one or more tables. In MySQL, a report is the result of a query, displayed in a way that helps a person understand or decide something.</p>
+
+<p>Common types of reports include summary reports (totals such as total sales or number of students), detail reports (full lists of rows), grouped reports (rows grouped by category such as class or city), filtered reports (rows matching a condition, for example students above 80% marks) and aggregate reports (using functions such as SUM, AVG and COUNT).</p>
+
+<p>MySQL itself produces raw structured data. For graphical or printable reports, it is connected to reporting tools such as Power BI, Tableau or Google Data Studio. The database does the storing and selecting; the reporting tool does the drawing.</p>
+
+<hr class="sep">
+
+<!-- ============================================================ -->
+<!-- EXERCISE SET 1 — DBMS -->
+<!-- ============================================================ -->
+
+<h1 class="unit" id="ex1">Exercise Set 1 — Database Management System (Fully Worked)</h1>
+
+<h2>Section 1 — Multiple Choice Questions</h2>
+
+<p class="q"><span class="qnum">1(a).</span> Which of the following is an example of DBMS?</p>
+<p>MS Word, MySQL, Photoshop, PowerPoint.</p>
+<p><span class="ans-label">Answer</span> — MySQL.</p>
+<p>Reasoning: MS Word is a word processor, Photoshop is an image editor and PowerPoint is a presentation tool. None of them stores structured data with integrity rules and query support. MySQL is a database management system.</p>
+
+<p class="q"><span class="qnum">1(b).</span> Data becomes information when:</p>
+<p>It is raw and unorganized; it is processed and given context; it is stored in a table; it is in binary form.</p>
+<p><span class="ans-label">Answer</span> — It is processed and given context.</p>
+<p>Reasoning: Raw facts become meaningful information only after processing that places them in a context, so that the reader can understand what they describe.</p>
+
+<p class="q"><span class="qnum">1(c).</span> Which of the following is NOT a feature of DBMS?</p>
+<p>Data redundancy; data integrity; data security; multi-user access.</p>
+<p><span class="ans-label">Answer</span> — Data redundancy.</p>
+<p>Reasoning: Redundancy means unnecessary duplication of data, which a DBMS actively tries to reduce. Integrity, security and multi-user access are all features.</p>
+
+<p class="q"><span class="qnum">1(d).</span> In SQL, which command is used to remove all records from a table but keep the structure?</p>
+<p>DROP; DELETE; TRUNCATE; REMOVE.</p>
+<p><span class="ans-label">Answer</span> — TRUNCATE.</p>
+<p>Reasoning: DROP removes the table itself. DELETE with no condition removes rows but is slower and can be rolled back. REMOVE is not an SQL command. TRUNCATE removes all rows in one operation and leaves the table structure intact.</p>
+
+<p class="q"><span class="qnum">1(e).</span> The PRIMARY KEY ensures that:</p>
+<p>Records are stored in order; each record is unique and not NULL; records can be duplicated; data can be stored in multiple tables.</p>
+<p><span class="ans-label">Answer</span> — Each record is unique and not NULL.</p>
+<p>Reasoning: The purpose of a primary key is to identify each row uniquely, and it therefore cannot contain duplicate values or empty values.</p>
+
+<p class="q"><span class="qnum">1(f).</span> Which of the following is a numeric data type?</p>
+<p>VARCHAR; DATE; INT; TEXT.</p>
+<p><span class="ans-label">Answer</span> — INT.</p>
+<p>Reasoning: INT stores whole numbers. VARCHAR and TEXT store text. DATE stores dates.</p>
+
+<p class="q"><span class="qnum">1(g).</span> A field in one table that refers to the primary key in another table is called:</p>
+<p>Candidate key; foreign key; composite key; super key.</p>
+<p><span class="ans-label">Answer</span> — Foreign key.</p>
+<p>Reasoning: A foreign key is, by definition, a column in one table that points to the primary key of another table, creating a link between the two.</p>
+
+<p class="q"><span class="qnum">1(h).</span> SQL stands for:</p>
+<p>Structured Quick Language; Standard Query Language; Structured Query Language; Simple Query Language.</p>
+<p><span class="ans-label">Answer</span> — Structured Query Language.</p>
+
+<p class="q"><span class="qnum">1(i).</span> In SQL, the % symbol is used in the LIKE clause to represent:</p>
+<p>Single character; multiple characters; no character; NULL value.</p>
+<p><span class="ans-label">Answer</span> — Multiple characters.</p>
+<p>Reasoning: % matches any sequence of characters, including none. The underscore _ matches exactly one character.</p>
+
+<p class="q"><span class="qnum">1(j).</span> Which of the following is a DML command?</p>
+<p>CREATE; SELECT; DROP; ALTER.</p>
+<p><span class="ans-label">Answer</span> — SELECT.</p>
+<p>Reasoning: CREATE, DROP and ALTER are DDL commands because they change the structure. SELECT works on the data, so it belongs to DML.</p>
+
+<p class="q"><span class="qnum">1(k).</span> What is the primary difference between CHAR(n) and VARCHAR(n) data types?</p>
+<p>CHAR stores only numeric data, while VARCHAR stores text; CHAR has a fixed length, while VARCHAR has a variable length up to n characters; VARCHAR is used for dates, while CHAR is for text; there is no significant difference between them.</p>
+<p><span class="ans-label">Answer</span> — CHAR has a fixed length, while VARCHAR has a variable length up to n characters.</p>
+<p>Reasoning: CHAR(n) always stores exactly n characters, padding with spaces when the value is shorter. VARCHAR(n) stores only the characters entered, up to n.</p>
+
+<p class="q"><span class="qnum">1(l).</span> Which SQL data type is used for storing only date values (e.g., YYYY-MM-DD)?</p>
+<p>TIME; DATETIME; TIMESTAMP; DATE.</p>
+<p><span class="ans-label">Answer</span> — DATE.</p>
+<p>Reasoning: DATE stores only the date. TIME stores only the time. DATETIME and TIMESTAMP store both.</p>
+
+<p class="q"><span class="qnum">1(m).</span> What does the SQL LIKE clause help you do?</p>
+<p>Perform exact matches; search for patterns in data; sort the data; define data types.</p>
+<p><span class="ans-label">Answer</span> — Search for patterns in data.</p>
+<p>Reasoning: The LIKE clause matches a column against a pattern using wildcards, rather than requiring the exact value.</p>
+
+<h2>Section 2 — Short Questions (2 Marks Each)</h2>
+
+<p class="q"><span class="qnum">2(a).</span> Define a database.</p>
+<p>A database is an organised collection of related data stored so that it can be accessed, managed and updated efficiently. It arranges data in structures such as tables and allows specific facts to be found without scanning everything.</p>
+
+<p class="q"><span class="qnum">2(b).</span> List any two differences between data and information.</p>
+<ol>
+  <li>Data is raw and unprocessed; information is the result of processing data and giving it context.</li>
+  <li>Data has no meaning on its own; information is meaningful and useful for understanding or decision making.</li>
+</ol>
+
+<p class="q"><span class="qnum">2(c).</span> What is the foreign key?</p>
+<p>A foreign key is a field in one table that refers to the primary key of another table. It creates a link between the two tables and ensures that references are valid, since the database refuses to store a foreign key value that does not exist in the referenced table.</p>
+
+<p class="q"><span class="qnum">2(d).</span> Define fields and rows.</p>
+<p>A field is a column of a table. It holds one kind of fact, such as a name or a date, for every record. A row, also called a record, is one complete entry in the table, containing a value for each field.</p>
+
+<p class="q"><span class="qnum">2(e).</span> Differentiate database and DBMS.</p>
+<p>A database is the organised collection of data itself. A DBMS is the software that sits between the user and the database, allowing data to be stored, retrieved, updated and protected according to rules. The database is what is stored; the DBMS is the tool that manages it.</p>
+
+<p class="q"><span class="qnum">2(f).</span> Describe RDBMS.</p>
+<p>An RDBMS is a database management system that stores data in tables and links those tables using keys. Data is stored once and referred to elsewhere by key, reducing duplication. MySQL, Oracle, PostgreSQL and Microsoft SQL Server are examples.</p>
+
+<p class="q"><span class="qnum">2(g).</span> Write two advantages of DBMS.</p>
+<ol>
+  <li>It reduces data redundancy and inconsistency by centralising storage.</li>
+  <li>It enforces security and integrity rules automatically, so only valid data is accepted and only authorised users may access it.</li>
+</ol>
+
+<p class="q"><span class="qnum">2(h).</span> What is primary key? Give an example.</p>
+<p>A primary key is a field or set of fields that uniquely identifies each record in a table. It cannot be duplicated and cannot be empty. For example, in a Students table, StudentID serves as the primary key because each student has a distinct number.</p>
+
+<p class="q"><span class="qnum">2(i).</span> Define a table in a database.</p>
+<p>A table is the basic storage structure of a database. It arranges data into rows and columns, where each column is a field of one type and each row is one complete record.</p>
+
+<p class="q"><span class="qnum">2(j).</span> Differentiate between DELETE and TRUNCATE commands.</p>
+<p>DELETE removes rows selected by a WHERE condition and can be rolled back. It fires triggers and logs each deletion, so it is slower on large tables. TRUNCATE removes all rows in a single operation, ignores any condition, cannot usually be rolled back, does not fire triggers and is much faster.</p>
+
+<p class="q"><span class="qnum">2(k).</span> Write two features of SQL.</p>
+<ol>
+  <li>It is a standard language, so the same basic statements work across different relational databases.</li>
+  <li>It is non-procedural: the user states what is wanted, not how to find it, and the database decides the best method.</li>
+</ol>
+
+<p class="q"><span class="qnum">2(l).</span> What is the use of the WHERE clause in SQL?</p>
+<p>The WHERE clause filters rows so that a statement acts only on those satisfying a condition. It is used with SELECT to limit retrieved rows, with UPDATE to limit which rows are changed and with DELETE to limit which rows are removed.</p>
+
+<p class="q"><span class="qnum">2(m).</span> Define a foreign key with an example.</p>
+<p>A foreign key is a field that refers to the primary key of another table. For example, in a Library table, StudentID is a foreign key pointing to the StudentID primary key of the Students table. It ensures that a book can only be loaned to a student who exists in the Students table.</p>
+
+<p class="q"><span class="qnum">2(n).</span> Write the syntax of the CREATE DATABASE command in SQL.</p>
+<pre class="code">CREATE DATABASE database_name;</pre>
+<p>For example:</p>
+<pre class="code">CREATE DATABASE school;</pre>
+
+<h2>Section 3 — Long Questions (5 Marks Each)</h2>
+
+<p class="q"><span class="qnum">3(a).</span> Explain the advantages and disadvantages of DBMS with suitable examples.</p>
+
+<p>A Database Management System is software that sits between the user and the stored data, controlling how the data is stored, retrieved, changed and protected. Its benefits and costs are best understood through concrete cases.</p>
+
+<p><strong>Advantages.</strong></p>
+<ol>
+  <li><strong>Reduced duplication.</strong> In a school, a student's name and address need be stored only once, in the Students table. Other tables refer to the student by ID. If the address changes, one update is enough. In a paper file system the same change must be made in every register, and any register missed becomes wrong.</li>
+  <li><strong>Consistency and integrity.</strong> A DBMS enforces rules. If marks are constrained to lie between 0 and 100, a typing error entering 1000 is rejected at the moment of entry. In a paper register the error would persist unnoticed.</li>
+  <li><strong>Fast retrieval.</strong> A library with fifty thousand books can find every book borrowed by a particular student in a fraction of a second. Doing the same manually would take hours.</li>
+  <li><strong>Security.</strong> Different users can be given different rights. A clerk may insert new students but not delete existing ones; a teacher may view marks but not change fees. The DBMS enforces these distinctions.</li>
+  <li><strong>Backup and recovery.</strong> Regular backups are built into the workflow. If a disk fails, the most recent backup restores the data. Without a DBMS, recovery depends on whether someone happened to make a copy.</li>
+  <li><strong>Concurrent use.</strong> Many clerks can work at the same time without overwriting each other's entries.</li>
+</ol>
+
+<p><strong>Disadvantages.</strong></p>
+<ol>
+  <li><strong>Cost.</strong> Commercial DBMSs such as Oracle carry significant licensing costs, and even free systems incur hardware and training costs. A small shop may not recover these.</li>
+  <li><strong>Complexity.</strong> Designing tables, choosing data types and writing queries requires training. Mistakes in design are costly to undo once data has accumulated.</li>
+  <li><strong>Maintenance burden.</strong> Performance tuning, backup schedules and software updates are ongoing tasks. Neglect leads to slow queries or data loss.</li>
+  <li><strong>Single point of failure.</strong> If the central database goes down and backups are poor, the whole organisation loses access at once. A paper system degrades gradually; a centralised one can fail suddenly.</li>
+  <li><strong>Overkill for small needs.</strong> A single person keeping fifty addresses does not need a DBMS; a spreadsheet is simpler and adequate.</li>
+</ol>
+
+<p>In summary, a DBMS is justified when data is large, shared, and valuable enough that errors and duplication carry real cost. For small, single-user tasks, its overhead outweighs its benefits.</p>
+
+<p class="q"><span class="qnum">3(b).</span> Define different types of database relationships (1:1, 1:M, M:M) with examples.</p>
+
+<p>A relationship in a database is a logical link between two tables, created by a foreign key in one table pointing to the primary key of the other. The type of the relationship describes how many rows in one table may be associated with how many rows in the other.</p>
+
+<p><strong>One-to-one (1:1).</strong> Each record in one table is associated with exactly one record in the other. This is uncommon because the two tables could usually be merged, but it is useful when one part of the data is sensitive or rarely used and benefits from separation.</p>
+<p>Example: A Person table and a Passport table. Each person holds at most one passport, and each passport belongs to one person.</p>
+
+<p><strong>One-to-many (1:M).</strong> One record in the first table is associated with many records in the second, but each record in the second is associated with only one in the first. This is by far the most common relationship.</p>
+<p>Example: A Teacher table and a Classes table. One teacher may teach several classes, but each class is taught by one teacher. The Classes table holds a TeacherID foreign key pointing to the Teacher table.</p>
+
+<p><strong>Many-to-many (M:M).</strong> Many records in one table are associated with many records in the other. This cannot be stored in two tables alone; a third table, called a junction table, holds pairs of keys.</p>
+<p>Example: A Students table and a Courses table. A student may enrol in several courses, and a course may contain several students. A junction table, Enrolments, holds one row per student-course pair, with a foreign key to each of the other two tables.</p>
+
+<p class="q"><span class="qnum">3(c).</span> Explain DDL and DML commands with examples.</p>
+
+<p>SQL statements are grouped according to what they change. DDL changes the structure of the database; DML changes the data inside it.</p>
+
+<p><strong>DDL — Data Definition Language.</strong> DDL commands define or alter the shape of the database: which tables exist, what columns they have and what rules apply. They are committed automatically and cannot be rolled back.</p>
+
+<pre class="code">CREATE TABLE students (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Class INT NOT NULL
+);
+
+ALTER TABLE students ADD Email VARCHAR(100);
+
+ALTER TABLE students MODIFY Class INT DEFAULT 10;
+
+DROP TABLE students;</pre>
+
+<p>Each statement changes structure. The first creates a table. The second adds a column. The third changes a column's default value. The fourth removes the table entirely.</p>
+
+<p><strong>DML — Data Manipulation Language.</strong> DML commands work on the rows inside a table. They can be rolled back if not committed.</p>
+
+<pre class="code">INSERT INTO students (ID, Name, Class)
+VALUES (101, 'Binay Adhikari', 10);
+
+SELECT * FROM students WHERE Class = 10;
+
+UPDATE students SET Class = 11 WHERE ID = 101;
+
+DELETE FROM students WHERE ID = 103;</pre>
+
+<p>Each statement changes or reads rows. The first adds a row, the second reads rows, the third changes one row and the fourth removes a row.</p>
+
+<p>In short, DDL is about the container; DML is about the contents.</p>
+
+<p class="q"><span class="qnum">3(d).</span> What are database constraints? Explain NOT NULL, UNIQUE and CHECK with examples.</p>
+
+<p>Constraints are rules attached to columns that restrict what values may be stored. They enforce data integrity by rejecting anything that violates the rule at the moment of entry, rather than allowing bad data to accumulate.</p>
+
+<p><strong>NOT NULL.</strong> The column must contain a value; empty values are rejected.</p>
+<pre class="code">CREATE TABLE students (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Class INT
+);</pre>
+<p>Here Name cannot be left empty. Any attempt to insert a student without a name fails.</p>
+
+<p><strong>UNIQUE.</strong> Every value in the column must be different from all others. Unlike the primary key, more than one UNIQUE column may exist in a table, and a UNIQUE column may accept NULL in some databases.</p>
+<pre class="code">CREATE TABLE employees (
+    EmpID INT PRIMARY KEY,
+    Email VARCHAR(100) UNIQUE
+);</pre>
+<p>Here no two employees may share an email address, but the primary key is still EmpID.</p>
+
+<p><strong>CHECK.</strong> The column may only accept values that satisfy a condition.</p>
+<pre class="code">CREATE TABLE marks (
+    StudentID INT PRIMARY KEY,
+    Score INT CHECK (Score BETWEEN 0 AND 100)
+);</pre>
+<p>Here Score must lie between 0 and 100. An attempt to insert 150 is rejected.</p>
+
+<p>Other constraints include PRIMARY KEY, FOREIGN KEY and DEFAULT. Together they enforce the business rules of the database at the data level.</p>
+
+<p class="q"><span class="qnum">3(e).</span> Describe fields and records in a database with a neat example.</p>
+
+<p>A database table is a grid of rows and columns. Each column is a field, and each row is a record.</p>
+
+<p>A <strong>field</strong> is a column that holds one kind of fact for every record in the table. The field name describes what the column contains, and the field has a data type that determines what values are allowed.</p>
+
+<p>A <strong>record</strong> is a row that holds one complete entry. It contains one value for each field.</p>
+
+<p>Consider the following Students table.</p>
+
+<table>
+  <tr><th>StudentID</th><th>Name</th><th>Class</th><th>DateOfBirth</th></tr>
+  <tr><td class="c">101</td><td>Binay Adhikari</td><td class="c">10</td><td class="c">2010-03-12</td></tr>
+  <tr><td class="c">102</td><td>Subigya Nepal</td><td class="c">10</td><td class="c">2011-07-25</td></tr>
+  <tr><td class="c">103</td><td>Aarambha Gharti</td><td class="c">9</td><td class="c">2013-11-10</td></tr>
+</table>
+
+<p>The fields are StudentID, Name, Class and DateOfBirth. Each field holds one kind of value: StudentID holds whole numbers, Name holds text, DateOfBirth holds dates.</p>
+
+<p>The records are the three rows. The row containing 101, Binay Adhikari, 10 and 2010-03-12 is one record, describing one student completely. There are three records and four fields in this table.</p>
+
+<p class="q"><span class="qnum">3(f).</span> What is a Query? List out its importance in DBMS.</p>
+
+<p>A query is a request sent to a database asking for data or asking for data to be changed. Queries are written in SQL.</p>
+
+<p>Queries are important for several reasons.</p>
+<ol>
+  <li><strong>Selective retrieval.</strong> Instead of viewing an entire table, a query retrieves only the rows and columns that matter. A school can ask for the names of students in Class 10 whose fee is unpaid, and receive exactly those rows.</li>
+  <li><strong>Filtering and sorting.</strong> Queries can select rows matching a condition and order them by any field.</li>
+  <li><strong>Summary and analysis.</strong> Functions such as SUM, AVG and COUNT allow totals and averages to be computed directly within the database, without exporting data to another tool.</li>
+  <li><strong>Modification.</strong> Queries insert, update and delete rows, so all change to the data happens through the same controlled interface.</li>
+  <li><strong>Repeatability.</strong> The same query may be run again whenever needed, giving consistent results.</li>
+  <li><strong>Reporting.</strong> Reports of many kinds, from daily summaries to annual breakdowns, are built from queries.</li>
+</ol>
+
+<p class="q"><span class="qnum">3(g).</span> In the context of MySQL, what is a report, and what is its purpose?</p>
+
+<p>A report is the organised presentation of data retrieved from one or more tables, usually the result of a query, displayed in a format that helps a reader understand the data or make a decision.</p>
+
+<p>MySQL itself produces structured data in tabular form. A report takes that structured output and presents it usefully: with column headings, in a chosen order, filtered to the relevant rows and often summarised. For graphical or printed reports, MySQL is connected to tools such as Power BI, Tableau or Google Data Studio.</p>
+
+<p>The purpose of a report is to turn stored data into something a person can act on. A list of raw transactions is data; a monthly summary of sales by region is a report, and it is the report that guides decisions.</p>
+
+<p class="q"><span class="qnum">3(h).</span> Describe Report with its features.</p>
+
+<p>A report in MySQL is the output of one or more queries, arranged for reading and decision making.</p>
+
+<p>Its features include the following.</p>
+<ol>
+  <li><strong>Organised data presentation.</strong> Columns are labelled and rows are arranged in a logical order.</li>
+  <li><strong>Data filtering.</strong> Only rows relevant to the question are included, using WHERE conditions.</li>
+  <li><strong>Summarisation.</strong> Totals, averages and counts are computed using aggregate functions, so the reader sees the whole picture rather than individual rows.</li>
+  <li><strong>Multi-table combination.</strong> Data from several tables is joined into a single view, so a report can show, for example, students together with the courses they have taken.</li>
+  <li><strong>Timely access.</strong> Reports are produced on demand, from current data, not from a snapshot taken weeks ago.</li>
+  <li><strong>Easy export.</strong> Report data can be exported to CSV, Excel or PDF and shared or printed.</li>
+</ol>
+
+<p>Common types of report include summary reports showing totals, detail reports listing individual rows, grouped reports organising rows by category, filtered reports containing only rows that meet a condition and aggregate reports built entirely from functions such as SUM, AVG and COUNT.</p>
+
+<h2>Section 4 — SQL Queries (10 Questions)</h2>
+
+<p>Each question below gives the SQL statement and, where relevant, the effect it produces. All statements assume the database SchoolDB has been created and selected.</p>
+
+<p class="q"><span class="qnum">4(a).</span> Create a database named SchoolDB.</p>
+<pre class="code">CREATE DATABASE SchoolDB;
+USE SchoolDB;</pre>
+<p>The first statement creates an empty database. The second selects it so subsequent statements work inside it.</p>
+
+<p class="q"><span class="qnum">4(b).</span> Create a table Students with fields: StudentID (INT, Primary Key), Name (VARCHAR), Age (INT).</p>
+<pre class="code">CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Age INT
+);</pre>
+<p>StudentID is declared as the primary key, so it must be unique and not empty. Name accepts up to fifty characters. Age accepts whole numbers.</p>
+
+<p class="q"><span class="qnum">4(c).</span> Insert 3 records into the Students table.</p>
+<pre class="code">INSERT INTO Students (StudentID, Name, Age)
+VALUES (1, 'Binay Adhikari', 15);
+
+INSERT INTO Students (StudentID, Name, Age)
+VALUES (2, 'Subigya Nepal', 14);
+
+INSERT INTO Students (StudentID, Name, Age)
+VALUES (3, 'Aurora Shah', 15);</pre>
+
+<p class="q"><span class="qnum">4(d).</span> Retrieve all records from the Students table.</p>
+<pre class="code">SELECT * FROM Students;</pre>
+<p>The asterisk retrieves every column for every row.</p>
+
+<p class="q"><span class="qnum">4(e).</span> Retrieve only the Name and Class of students from the Students table.</p>
+<p>The table does not contain a Class column, so this question presumes a Class column has been added. Assuming it exists:</p>
+<pre class="code">SELECT Name, Class FROM Students;</pre>
+<p>If the table has no Class column, the query must be preceded by an ALTER TABLE statement adding one:</p>
+<pre class="code">ALTER TABLE Students ADD Class INT;
+SELECT Name, Class FROM Students;</pre>
+
+<p class="q"><span class="qnum">4(f).</span> Update the Class of student with StudentID = 2 to 10.</p>
+<pre class="code">UPDATE Students
+SET Class = 10
+WHERE StudentID = 2;</pre>
+<p>The WHERE clause ensures only the row for student 2 is changed.</p>
+
+<p class="q"><span class="qnum">4(g).</span> Delete the record of the student named "Aurora".</p>
+<pre class="code">DELETE FROM Students
+WHERE Name = 'Aurora';</pre>
+<p>If more than one student is named Aurora, all matching rows are removed. A safer approach is to delete by StudentID.</p>
+
+<p class="q"><span class="qnum">4(h).</span> Retrieve all students whose Class is 10.</p>
+<pre class="code">SELECT * FROM Students
+WHERE Class = 10;</pre>
+
+<p class="q"><span class="qnum">4(i).</span> Retrieve all students whose names start with 'S'.</p>
+<pre class="code">SELECT * FROM Students
+WHERE Name LIKE 'S%';</pre>
+<p>The % wildcard matches any sequence of characters, so this returns every student whose name begins with S.</p>
+
+<p class="q"><span class="qnum">4(j).</span> Add a new column Contact (VARCHAR) to the Students table.</p>
+<pre class="code">ALTER TABLE Students
+ADD Contact VARCHAR(15);</pre>
+<p>ALTER TABLE changes the structure of an existing table. The new column is added with all values NULL until they are filled in.</p>
+
+<hr class="sep">
+
+<!-- ============================================================ -->
+<!-- UNIT 2 — FILE HANDLING USING PANDAS -->
+<!-- ============================================================ -->
+
+<h1 class="unit" id="u2">Unit 2 — File Handling using Pandas</h1>
+
+<h2>2.1 Why Files Exist</h2>
+
+<p>Everything a Python program works with lives in memory, and memory is cleared the moment the program ends. If the program is supposed to remember something after it closes, that something must be written to a file on the disk. A <strong>file</strong> is a named collection of data stored permanently on a storage device.</p>
+
+<p>Writing data to a file and reading it back is called <strong>file handling</strong>. In Python, file handling is built into the language, and the Pandas library extends it to handle structured data such as CSV files with great convenience.</p>
+
+<p class="cracker"><span class="lead">Concept cracker.</span> Memory is a desk; the disk is a cupboard. Anything left on the desk disappears when you leave the room. Anything placed in the cupboard is still there tomorrow. File handling is the act of moving things between desk and cupboard.</p>
+
+<h2>2.2 Advantages and Disadvantages of File Handling</h2>
+
+<p><strong>Advantages.</strong></p>
+<ul>
+  <li>Data persists after the program ends.</li>
+  <li>Data can be shared between programs and between runs.</li>
+  <li>Python can work with many file types: plain text, CSV, binary and more.</li>
+  <li>The functions are simple and cross-platform, working the same on Windows, macOS and Linux.</li>
+  <li>Large quantities of data can be stored far beyond what memory would allow.</li>
+</ul>
+
+<p><strong>Disadvantages.</strong></p>
+<ul>
+  <li>Code must be written carefully; a mistake in file handling can overwrite or corrupt data.</li>
+  <li>There are security risks, especially when file names come from user input.</li>
+  <li>Complex formats take more code to handle correctly.</li>
+  <li>Disk access is slower than memory access, so file-heavy programs can be slow.</li>
+</ul>
+
+<h2>2.3 Opening a File: The Modes</h2>
+
+<p>Before any file can be read or written, it must be opened. Python's built-in function <code>open()</code> does this. It takes two arguments: the name of the file and the mode.</p>
+
+<pre class="code">file = open("data.txt", "r")</pre>
+
+<p>The mode decides what may be done with the file. There are four common modes.</p>
+
+<table>
+  <tr><th>Mode</th><th>Name</th><th>Behaviour</th></tr>
+  <tr><td>r</td><td>Read</td><td>Opens the file for reading. Raises an error if the file does not exist.</td></tr>
+  <tr><td>w</td><td>Write</td><td>Opens the file for writing. Creates it if it does not exist. Erases existing contents if it does.</td></tr>
+  <tr><td>a</td><td>Append</td><td>Opens the file for writing at the end. Creates it if it does not exist. Keeps existing contents.</td></tr>
+  <tr><td>x</td><td>Exclusive creation</td><td>Creates a new file. Raises an error if a file of that name already exists.</td></tr>
+</table>
+
+<p class="cracker"><span class="lead">Concept cracker.</span> The letter tells you what the file is for: r for reading, w for wiping and writing, a for adding, x for a fresh file only. If you remember wiping for w, you will not accidentally destroy data by using the wrong mode.</p>
+
+<p class="tutor"><span class="lead">Tutor's tip.</span> Most beginner mistakes with files come from using w when a was intended. w erases the file's previous contents the moment it is opened, before a single character is written. If you wanted to add to an existing file, use a.</p>
+
+<h2>2.4 Closing a File, and the with Statement</h2>
+
+<p>Once a file has been opened and used, it should be closed. Closing frees system resources and ensures that any buffered data is flushed to the disk.</p>
+
+<pre class="code">file = open("data.txt", "r")
+content = file.read()
+print(content)
+file.close()</pre>
+
+<p>The <code>with</code> statement does the same work more safely. The file is closed automatically as soon as the block ends, even if an error occurs inside it.</p>
+
+<pre class="code">with open("data.txt", "r") as file:
+    content = file.read()
+    print(content)</pre>
+
+<p class="tutor"><span class="lead">Tutor's tip.</span> Learn the with statement as your default. It removes an entire class of bug, and it saves you from remembering to call close. Then, when a question asks specifically about <code>close()</code>, you still know what it does.</p>
+
+<h2>2.5 Reading from a File</h2>
+
+<p>Three methods read from a file.</p>
+
+<table>
+  <tr><th>Method</th><th>Effect</th></tr>
+  <tr><td>read()</td><td>Reads the entire file as one string.</td></tr>
+  <tr><td>read(n)</td><td>Reads the next n characters.</td></tr>
+  <tr><td>readline()</td><td>Reads one line, up to and including the newline character.</td></tr>
+  <tr><td>readlines()</td><td>Reads all lines into a list, one string per line.</td></tr>
+</table>
+
+<pre class="code">with open("data.txt", "r") as file:
+    first_line = file.readline()
+    rest = file.read()
+    print(first_line)
+    print(rest)</pre>
+
+<h2>2.6 Writing to a File</h2>
+
+<p>Two methods write to a file.</p>
+
+<table>
+  <tr><th>Method</th><th>Effect</th></tr>
+  <tr><td>write(s)</td><td>Writes the string s to the file. Does not add a newline.</td></tr>
+  <tr><td>writelines(list)</td><td>Writes each string in the list to the file. Does not add newlines.</td></tr>
+</table>
+
+<pre class="code">with open("data.txt", "w") as file:
+    file.write("First line\n")
+    file.write("Second line\n")</pre>
+
+<p>Note the explicit <code>\n</code> at the end of each string. Without it, the two writes would appear on the same line.</p>
+
+<pre class="code">lines = ["First line\n", "Second line\n", "Third line\n"]
+with open("data.txt", "w") as file:
+    file.writelines(lines)</pre>
+
+<p class="tutor"><span class="lead">Tutor's tip.</span> Neither write nor writelines adds a newline automatically. Every newline must be placed by hand in the string. If your output comes out as one long line, the missing <code>\n</code> is the reason.</p>
+
+<h2>2.7 CSV Files and Why They Matter</h2>
+
+<p>A <strong>CSV</strong> file, standing for Comma Separated Values, stores tabular data as plain text. Each row of the table becomes one line of the file, and each column value within a row is separated from the next by a comma.</p>
+
+<pre class="code">Name,Age,Grade
+Binay,15,A
+Subigya,14,B
+Aurora,15,A</pre>
+
+<p>CSV files are favoured because they are plain text and therefore portable, simple to read and write, and supported by almost every language and spreadsheet program.</p>
+
+<p class="cracker"><span class="lead">Concept cracker.</span> A CSV file is a table that has been flattened into text. Every line is a row, and every comma marks a column boundary. If you can picture the table, you can picture the file.</p>
+
+<h2>2.8 Reading and Writing CSV Files with the csv Module</h2>
+
+<p>Python's standard library includes a <code>csv</code> module for reading and writing these files without Pandas.</p>
+
+<pre class="code">import csv
+
+with open("students.csv", "r") as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        print(row)</pre>
+
+<p>Here <code>csv.reader</code> returns an object that yields one list per row. Each list contains the values of that row, separated by commas.</p>
+
+<p>Writing is done with <code>csv.writer</code> and its <code>writerow</code> method.</p>
+
+<pre class="code">import csv
+
+with open("students.csv", "w", newline="") as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(["Name", "Age", "Grade"])
+    writer.writerow(["Binay", 15, "A"])
+    writer.writerow(["Subigya", 14, "B"])</pre>
+
+<p>The <code>newline=""</code> argument prevents blank lines appearing between rows on Windows.</p>
+
+<h2>2.9 Pandas and DataFrames</h2>
+
+<p>Pandas is a Python library built for data analysis. It is built on top of NumPy and offers a single object, the <strong>DataFrame</strong>, that holds a whole table in memory and supports reading, filtering, aggregating and writing with very little code.</p>
+
+<p>A DataFrame is best thought of as a table with named columns, where each column is a series of values of one type.</p>
+
+<p>To install Pandas if it is not already available:</p>
+<pre class="code">pip install pandas</pre>
+
+<p>To use it in a program:</p>
+<pre class="code">import pandas as pd</pre>
+
+<p>The alias pd is a widely followed convention and should be used.</p>
+
+<h2>2.10 Reading a CSV File with Pandas</h2>
+
+<p>The function <code>pd.read_csv()</code> reads a CSV file and returns a DataFrame.</p>
+
+<pre class="code">import pandas as pd
+
+df = pd.read_csv("students.csv")
+print(df)</pre>
+
+<p>The result is printed as a table with an index on the left, one column per field.</p>
+
+<pre class="output">      Name  Age Grade
+0    Binay   15     A
+1  Subigya   14     B
+2   Aurora   15     A</pre>
+
+<p>The index 0, 1, 2 is generated automatically. It is not part of the data unless explicitly saved.</p>
+
+<p>Common attributes and methods on a DataFrame include the following.</p>
+
+<table>
+  <tr><th>Attribute or method</th><th>Effect</th></tr>
+  <tr><td>df.columns</td><td>Returns the names of the columns.</td></tr>
+  <tr><td>df.shape</td><td>Returns the dimensions as (rows, columns).</td></tr>
+  <tr><td>df.info()</td><td>Prints a summary: column names, types and non-null counts.</td></tr>
+  <tr><td>df.head(n)</td><td>Returns the first n rows (five by default).</td></tr>
+  <tr><td>df.tail(n)</td><td>Returns the last n rows.</td></tr>
+  <tr><td>df["Name"]</td><td>Returns one column as a series.</td></tr>
+  <tr><td>df[df["Age"] &gt; 14]</td><td>Returns only rows satisfying the condition.</td></tr>
+</table>
+
+<h2>2.11 Writing a CSV File with Pandas</h2>
+
+<p>To write a DataFrame to a CSV file, use <code>to_csv()</code>.</p>
+
+<pre class="code">import pandas as pd
+
+data = {
+    "Name": ["Binay", "Subigya", "Aurora"],
+    "Age": [15, 14, 15],
+    "Grade": ["A", "B", "A"]
+}
+df = pd.DataFrame(data)
+df.to_csv("students.csv", index=False)</pre>
+
+<p>The argument <code>index=False</code> prevents Pandas from writing its internal row numbers as a column in the file. Almost every practical question expects <code>index=False</code>.</p>
+
+<p class="tutor"><span class="lead">Tutor's tip.</span> When you save a DataFrame and then read it back, forgetting <code>index=False</code> produces an extra unnamed column at the start. If you see a column called "Unnamed: 0" in the output, the file was saved without <code>index=False</code>.</p>
+
+<hr class="sep">
+
+<!-- ============================================================ -->
+<!-- EXERCISE SET 2 — FILE HANDLING -->
+<!-- ============================================================ -->
+
+<h1 class="unit" id="ex2">Exercise Set 2 — File Handling using Pandas (Fully Worked)</h1>
+
+<h2>Section 1 — Multiple Choice Questions</h2>
+
+<p class="q"><span class="qnum">1(a).</span> What does the Pandas library primarily help with in Python?</p>
+<p>GUI Development; Data Analysis; Web Scraping; Image Processing.</p>
+<p><span class="ans-label">Answer</span> — Data Analysis.</p>
+<p>Reasoning: Pandas provides the DataFrame and the tools to load, filter, aggregate and save structured data.</p>
+
+<p class="q"><span class="qnum">1(b).</span> Which function is used to read a CSV file using Pandas?</p>
+<p>read(); read_csv(); open(); load_csv().</p>
+<p><span class="ans-label">Answer</span> — read_csv(), used as <code>pd.read_csv()</code>.</p>
+
+<p class="q"><span class="qnum">1(c).</span> What mode should you use in Python to append content to a file?</p>
+<p>'r'; 'w'; 'a'; 'x'.</p>
+<p><span class="ans-label">Answer</span> — 'a'.</p>
+<p>Reasoning: 'a' opens the file for writing at the end, preserving existing contents. 'w' would erase the file first.</p>
+
+<p class="q"><span class="qnum">1(d).</span> What does the 'with' statement ensure in file handling?</p>
+<p>File overwriting; file corruption; automatic closing of files; none of the above.</p>
+<p><span class="ans-label">Answer</span> — Automatic closing of files.</p>
+<p>Reasoning: When the block under <code>with</code> ends, Python closes the file, even if an exception occurred inside.</p>
+
+<p class="q"><span class="qnum">1(e).</span> Which is a disadvantage of file handling in Python?</p>
+<p>Data persistence; multiple format support; security issues; built-in functions.</p>
+<p><span class="ans-label">Answer</span> — Security issues.</p>
+<p>Reasoning: File handling can expose sensitive files if user input is used to form filenames without validation.</p>
+
+<p class="q"><span class="qnum">1(f).</span> Which method is used to write multiple rows in a CSV file?</p>
+<p>write(); writeline(); writerows(); addrows().</p>
+<p><span class="ans-label">Answer</span> — writerows().</p>
+<p>Reasoning: The <code>csv.writer</code> object has a <code>writerows()</code> method that accepts an iterable of row sequences and writes them all in one call.</p>
+
+<p class="q"><span class="qnum">1(g).</span> Which of the following is NOT a valid file mode?</p>
+<p>'r'; 'z'; 'a'; 'x'.</p>
+<p><span class="ans-label">Answer</span> — 'z'.</p>
+<p>Reasoning: 'z' has no meaning in Python's file mode system. The valid modes are 'r', 'w', 'a' and 'x', with optional 'b' or 't' modifiers.</p>
+
+<p class="q"><span class="qnum">1(h).</span> What is the default delimiter used in CSV files?</p>
+<p>Semicolon; tab; comma; space.</p>
+<p><span class="ans-label">Answer</span> — Comma.</p>
+
+<p class="q"><span class="qnum">1(i).</span> What does the .columns attribute return in a Pandas DataFrame?</p>
+<p>Row data; index values; header/field names; file path.</p>
+<p><span class="ans-label">Answer</span> — Header/field names.</p>
+
+<p class="q"><span class="qnum">1(j).</span> What Python module is typically used for reading structured CSV data manually?</p>
+<p>os; pandas; csv; numpy.</p>
+<p><span class="ans-label">Answer</span> — csv.</p>
+<p>Reasoning: The standard library module <code>csv</code> provides a reader and writer for CSV files. Pandas is a third-party library, while <code>os</code> and <code>numpy</code> serve other purposes.</p>
+
+<h2>Section 2 — Short Questions</h2>
+
+<p class="q"><span class="qnum">2(a).</span> Define file handling in Python.</p>
+<p>File handling is the process of creating, opening, reading, writing, appending and closing files from a Python program. It allows data to persist on disk after the program ends.</p>
+
+<p class="q"><span class="qnum">2(b).</span> Mention any three advantages of file handling.</p>
+<ol>
+  <li>Data persists after the program ends.</li>
+  <li>Data can be shared between programs and between different runs.</li>
+  <li>Large amounts of data can be stored beyond what memory would allow.</li>
+</ol>
+
+<p class="q"><span class="qnum">2(c).</span> Write the syntax to open a file using the 'with' statement.</p>
+<pre class="code">with open("filename", "mode") as file:
+    # operations on file</pre>
+
+<p class="q"><span class="qnum">2(d).</span> What are the differences between write ('w') and append ('a') mode?</p>
+<p>In write mode, the file is opened for writing and any existing contents are erased immediately. In append mode, the file is opened for writing at the end and existing contents are preserved; new data is added after the current contents. Both create the file if it does not exist.</p>
+
+<p class="q"><span class="qnum">2(e).</span> Explain the use of readline() and readlines() methods in Python.</p>
+<p><code>readline()</code> reads a single line from the file and returns it as a string, including the trailing newline. <code>readlines()</code> reads all remaining lines and returns them as a list of strings, one string per line. Repeated calls to <code>readline()</code> advance through the file one line at a time.</p>
+
+<p class="q"><span class="qnum">2(f).</span> List the steps to read a CSV file using the csv module.</p>
+<ol>
+  <li>Import the csv module.</li>
+  <li>Open the file in read mode with <code>open()</code> or <code>with</code>.</li>
+  <li>Pass the file object to <code>csv.reader()</code> to create a reader.</li>
+  <li>Iterate over the reader; each iteration yields one row as a list.</li>
+  <li>Process each row as required, then close the file.</li>
+</ol>
+
+<p class="q"><span class="qnum">2(g).</span> What are the key features of CSV files?</p>
+<ul>
+  <li>Plain text, so they can be opened in any text editor.</li>
+  <li>One row per line, columns separated by a comma by default.</li>
+  <li>Small and portable.</li>
+  <li>Supported by virtually every spreadsheet and database tool.</li>
+  <li>Easy to generate and parse programmatically.</li>
+</ul>
+
+<p class="q"><span class="qnum">2(h).</span> How can you create a new file in Python using exclusive mode?</p>
+<p>Open the file with mode 'x'.</p>
+<pre class="code">file = open("newfile.txt", "x")</pre>
+<p>If the file already exists, an error is raised. This makes 'x' useful when you must avoid overwriting an existing file.</p>
+
+<p class="q"><span class="qnum">2(i).</span> Write a short note on the disadvantages of file handling.</p>
+<p>File handling requires careful code; a mistake in mode selection can erase data. It carries security risks when file names come from user input. Complex formats need more code to parse correctly, and disk access is slower than memory, so programs that read and write large files frequently can be slow.</p>
+
+<p class="q"><span class="qnum">2(j).</span> What is the purpose of 'index=False' in the to_csv() function in pandas?</p>
+<p>By default, Pandas writes its internal row index as the first column of the saved file. The argument <code>index=False</code> suppresses this, so only the data columns are saved.</p>
+
+<h2>Section 3 — Long Questions</h2>
+
+<p class="q"><span class="qnum">3(a).</span> Explain in detail the advantages and disadvantages of file handling in Python.</p>
+
+<p>File handling is what makes a Python program able to remember. Without it, every run starts from nothing, and every result vanishes when the program closes.</p>
+
+<p><strong>Advantages.</strong></p>
+<ol>
+  <li><strong>Persistence.</strong> Data written to a file survives after the program ends and after the computer restarts. A student's marks saved to a CSV file today are still there next week.</li>
+  <li><strong>Sharing.</strong> Files provide a natural way for programs to exchange data. One program writes a CSV; another reads it without knowing anything about the first.</li>
+  <li><strong>Capacity.</strong> Files can hold far more data than memory can. A program can read a large file in chunks and process it without loading everything at once.</li>
+  <li><strong>Format flexibility.</strong> Python handles text files, binary files, CSV files and more with the same core functions, and Pandas extends this to structured tabular data.</li>
+  <li><strong>Cross-platform.</strong> The same code works on Windows, macOS and Linux; the operating system's differences are handled by Python.</li>
+</ol>
+
+<p><strong>Disadvantages.</strong></p>
+<ol>
+  <li><strong>Risk of data loss.</strong> Opening a file in 'w' mode erases its contents immediately. A single mistake in mode selection can destroy important data.</li>
+  <li><strong>Security concerns.</strong> If user input determines the filename, a malicious user may be able to read or overwrite files outside the intended scope.</li>
+  <li><strong>Complexity of formats.</strong> While CSV is simple, formats such as JSON, XML or binary structured files need careful parsing, and errors are easy to introduce.</li>
+  <li><strong>Slower than memory.</strong> Disk operations are far slower than in-memory operations. A program that reads a large file line by line will be much slower than one working entirely in memory.</li>
+  <li><strong>Error handling is needed.</strong> Files may not exist, may be locked, may have the wrong permissions, or may be corrupted. Every file operation must be written with these possibilities in mind.</li>
+</ol>
+
+<p>For a small program that just needs to save a few values, the cost is minimal. For large systems with sensitive data, the disadvantages are real and require deliberate handling.</p>
+
+<p class="q"><span class="qnum">3(b).</span> Describe the steps involved in reading a CSV file using both the csv module and the pandas library.</p>
+
+<p><strong>Using the csv module.</strong></p>
+<ol>
+  <li>Import the module:
+    <pre class="code">import csv</pre>
+  </li>
+  <li>Open the file with <code>open()</code> in read mode, preferably using <code>with</code> so the file closes automatically.</li>
+  <li>Pass the open file to <code>csv.reader()</code>.</li>
+  <li>Iterate over the reader. Each iteration returns one row as a list of strings.</li>
+</ol>
+
+<pre class="code">import csv
+
+with open("students.csv", "r") as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        print(row)</pre>
+
+<p><strong>Using the pandas library.</strong></p>
+<ol>
+  <li>Install and import pandas if it is not available:
+    <pre class="code">import pandas as pd</pre>
+  </li>
+  <li>Read the file into a DataFrame with <code>pd.read_csv()</code>.</li>
+  <li>Inspect the DataFrame with <code>print()</code>, <code>head()</code> or <code>info()</code>.</li>
+  <li>Process, filter or summarise as needed.</li>
+</ol>
+
+<pre class="code">import pandas as pd
+
+df = pd.read_csv("students.csv")
+print(df)
+print(df.head())</pre>
+
+<p>The csv module gives fine control and works with any file shape. Pandas is far more convenient when the data is tabular, because filtering, selecting and summarising become one-line operations.</p>
+
+<p class="q"><span class="qnum">3(c).</span> Explain various file modes in Python with examples for each.</p>
+
+<p>Python's <code>open()</code> function accepts a mode string that decides how the file is used.</p>
+
+<p><strong>'r' — read mode.</strong> Opens the file for reading. Raises an error if the file does not exist.</p>
+<pre class="code">with open("data.txt", "r") as file:
+    print(file.read())</pre>
+
+<p><strong>'w' — write mode.</strong> Opens the file for writing. Creates it if it does not exist. Erases existing contents if it does.</p>
+<pre class="code">with open("data.txt", "w") as file:
+    file.write("New content\n")</pre>
+
+<p><strong>'a' — append mode.</strong> Opens the file for writing at the end. Creates it if it does not exist. Preserves existing contents.</p>
+<pre class="code">with open("data.txt", "a") as file:
+    file.write("Appended line\n")</pre>
+
+<p><strong>'x' — exclusive creation mode.</strong> Creates a new file. Raises an error if a file with that name already exists.</p>
+<pre class="code">with open("data.txt", "x") as file:
+    file.write("Only written if data.txt did not exist\n")</pre>
+
+<p>Each mode may be combined with 'b' for binary or 't' for text. Text is the default.</p>
+
+<p class="q"><span class="qnum">3(d).</span> Describe how to write data to a CSV file using pandas with a complete example.</p>
+
+<p>Writing a CSV file with Pandas follows three steps: build a DataFrame, call <code>to_csv()</code>, and confirm the result.</p>
+
+<pre class="code">import pandas as pd
+
+# Step 1: prepare the data
+data = {
+    "Name": ["Binay", "Subigya", "Aurora"],
+    "Age": [15, 14, 15],
+    "Grade": ["A", "B", "A"]
+}
+
+# Step 2: create a DataFrame
+df = pd.DataFrame(data)
+
+# Step 3: write to a CSV file
+df.to_csv("students.csv", index=False)
+
+print("File written successfully.")</pre>
+
+<pre class="output">File written successfully.</pre>
+
+<p>The file students.csv now contains three lines plus a header:</p>
+<pre class="output">Name,Age,Grade
+Binay,15,A
+Subigya,14,B
+Aurora,15,A</pre>
+
+<p>The argument <code>index=False</code> prevented Pandas from writing its own row numbers into the file. Without it, the first column of the file would contain 0, 1, 2 under an empty heading.</p>
+
+<p class="q"><span class="qnum">3(e).</span> Compare and contrast file handling using Python's built-in csv module and pandas library.</p>
+
+<table>
+  <tr><th>Aspect</th><th>csv module</th><th>pandas</th></tr>
+  <tr><td>Availability</td><td>Part of the standard library, no installation needed.</td><td>Third-party; must be installed with pip.</td></tr>
+  <tr><td>Data representation</td><td>Rows as lists of strings.</td><td>DataFrame with named columns and typed values.</td></tr>
+  <tr><td>Filtering</td><td>Written manually with loops and conditions.</td><td>One-line Boolean indexing.</td></tr>
+  <tr><td>Aggregation</td><td>Written manually with counters and totals.</td><td>Built-in functions such as mean, sum and count.</td></tr>
+  <tr><td>Speed on small files</td><td>Fast and lightweight.</td><td>Slower to start because of the DataFrame overhead.</td></tr>
+  <tr><td>Speed on large files</td><td>Depends on how the code is written; can be slow.</td><td>Optimised; much faster for tabular work.</td></tr>
+  <tr><td>Best for</td><td>Simple reading and writing, unusual formats, full control.</td><td>Analysis, cleaning, filtering, aggregation and reporting.</td></tr>
+</table>
+
+<p>In practice, both are used. A quick script that reads a small file and prints it may prefer the csv module because it needs no installation. A data-analysis task that filters, groups and summarises will almost always prefer Pandas.</p>
+
+<p class="q"><span class="qnum">3(f).</span> Imagine you have a CSV file named "student_data.csv" with columns "Name", "Age", and "Grade". Write a Python program using the Pandas library to:</p>
+<ol>
+  <li>Read the data from the "student_data.csv" file into a DataFrame.</li>
+  <li>Print the first 5 rows of the DataFrame.</li>
+  <li>Calculate the average age of the students.</li>
+  <li>Create a new DataFrame containing only the students with a "Grade" of "A".</li>
+</ol>
+
+<pre class="code">import pandas as pd
+
+# 1. Read the CSV file
+df = pd.read_csv("student_data.csv")
+
+# 2. Print the first five rows
+print("First 5 rows:")
+print(df.head())
+
+# 3. Calculate the average age
+average_age = df["Age"].mean()
+print("Average age:", average_age)
+
+# 4. Create a new DataFrame with only Grade "A" students
+grade_a_df = df[df["Grade"] == "A"]
+print("Students with Grade A:")
+print(grade_a_df)</pre>
+
+<p>Assume the file contains the following data:</p>
+<pre class="output">Name,Age,Grade
+Binay,15,A
+Subigya,14,B
+Aurora,15,A
+Sampada,14,B
+Nidhi,15,A
+Biraj,16,C</pre>
+
+<pre class="output">First 5 rows:
+      Name  Age Grade
+0    Binay   15     A
+1  Subigya   14     B
+2   Aurora   15     A
+3  Sampada   14     B
+4    Nidhi   15     A
+Average age: 14.833333333333334
+Students with Grade A:
+    Name  Age Grade
+0  Binay   15     A
+2 Aurora   15     A
+4  Nidhi   15     A</pre>
+
+<p>The average is calculated by Pandas as a float. If a rounded result is needed, <code>round(average_age, 2)</code> may be used.</p>
+
+<h2>Section 4 — Practical Questions</h2>
+
+<p class="q"><span class="qnum">4(a).</span> Write a Python program to create a text file and write your name and class into it.</p>
+
+<pre class="code">name = "Binay Adhikari"
+clas = "Grade 10"
+
+with open("myinfo.txt", "w") as file:
+    file.write("Name: " + name + "\n")
+    file.write("Class: " + clas + "\n")
+
+print("Information written to myinfo.txt")</pre>
+
+<pre class="output">Information written to myinfo.txt</pre>
+
+<p>The file now contains:</p>
+<pre class="output">Name: Binay Adhikari
+Class: Grade 10</pre>
+
+<p class="q"><span class="qnum">4(b).</span> Write a program to open a text file in read mode and display its contents.</p>
+
+<pre class="code">with open("myinfo.txt", "r") as file:
+    content = file.read()
+    print(content)</pre>
+
+<pre class="output">Name: Binay Adhikari
+Class: Grade 10</pre>
+
+<p class="q"><span class="qnum">4(c).</span> Write a program to demonstrate the difference between write mode (w) and append mode (a).</p>
+
+<pre class="code"># Step 1: create a file and write two lines
+with open("demo.txt", "w") as file:
+    file.write("First line\n")
+    file.write("Second line\n")
+
+# Step 2: open in write mode again — contents are erased
+with open("demo.txt", "w") as file:
+    file.write("Contents after write mode\n")
+
+with open("demo.txt", "r") as file:
+    print("After write mode:")
+    print(file.read())
+
+# Step 3: open in append mode — contents are preserved
+with open("demo.txt", "a") as file:
+    file.write("Contents after append mode\n")
+
+with open("demo.txt", "r") as file:
+    print("After append mode:")
+    print(file.read())</pre>
+
+<pre class="output">After write mode:
+Contents after write mode
+
+After append mode:
+Contents after write mode
+Contents after append mode</pre>
+
+<p>The first 'w' erased the two original lines. The 'a' added to what remained.</p>
+
+<p class="q"><span class="qnum">4(d).</span> Write a program to append three new lines of text to an existing file.</p>
+
+<pre class="code">with open("demo.txt", "a") as file:
+    file.write("Line four\n")
+    file.write("Line five\n")
+    file.write("Line six\n")
+
+with open("demo.txt", "r") as file:
+    print(file.read())</pre>
+
+<pre class="output">Contents after write mode
+Contents after append mode
+Line four
+Line five
+Line six</pre>
+
+<p class="q"><span class="qnum">4(e).</span> Write a program using the with statement to read a file safely.</p>
+
+<pre class="code">with open("demo.txt", "r") as file:
+    for line in file:
+        print(line.strip())</pre>
+
+<pre class="output">Contents after write mode
+Contents after append mode
+Line four
+Line five
+Line six</pre>
+
+<p>The file is closed automatically at the end of the with block. The <code>strip()</code> call removes the trailing newline so that printing does not add a blank line between rows.</p>
+
+<p class="q"><span class="qnum">4(f).</span> Write a Python program to count the number of lines in a text file.</p>
+
+<pre class="code">count = 0
+with open("demo.txt", "r") as file:
+    for line in file:
+        count = count + 1
+print("Number of lines:", count)</pre>
+
+<pre class="output">Number of lines: 5</pre>
+
+<p class="q"><span class="qnum">4(g).</span> Write a program to read a file line by line using readline().</p>
+
+<pre class="code">with open("demo.txt", "r") as file:
+    line = file.readline()
+    while line:
+        print(line.strip())
+        line = file.readline()</pre>
+
+<pre class="output">Contents after write mode
+Contents after append mode
+Line four
+Line five
+Line six</pre>
+
+<p>Each call to <code>readline()</code> returns the next line, or an empty string when the end of the file is reached, which is why the while loop terminates.</p>
+
+<p class="q"><span class="qnum">4(h).</span> Write a Python program to create a new file using exclusive creation mode (x).</p>
+
+<pre class="code">try:
+    with open("exclusive.txt", "x") as file:
+        file.write("Created using exclusive mode.\n")
+    print("File created.")
+except FileExistsError:
+    print("File already exists. Exclusive mode refused.")</pre>
+
+<pre class="output">File created.</pre>
+
+<p>If the program is run a second time, the output is:</p>
+<pre class="output">File already exists. Exclusive mode refused.</pre>
+
+<p class="q"><span class="qnum">4(i).</span> Write a program to write multiple lines into a file using writelines().</p>
+
+<pre class="code">lines = [
+    "Alpha\n",
+    "Beta\n",
+    "Gamma\n",
+    "Delta\n"
+]
+
+with open("letters.txt", "w") as file:
+    file.writelines(lines)
+
+with open("letters.txt", "r") as file:
+    print(file.read())</pre>
+
+<pre class="output">Alpha
+Beta
+Gamma
+Delta</pre>
+
+<p>Each string in the list must include its own newline. Without the <code>\n</code>, all four strings would appear on one line.</p>
+
+<p class="q"><span class="qnum">4(j).</span> Write a Python program to properly close a file after reading its contents.</p>
+
+<pre class="code">file = open("letters.txt", "r")
+content = file.read()
+print(content)
+file.close()
+print("File closed.")</pre>
+
+<pre class="output">Alpha
+Beta
+Gamma
+Delta
+File closed.</pre>
+
+<p class="q"><span class="qnum">4(k).</span> Write a Python program to read a CSV file named students.csv using Pandas.</p>
+
+<pre class="code">import pandas as pd
+
+df = pd.read_csv("students.csv")
+print(df)</pre>
+
+<p>Assuming students.csv contains:</p>
+<pre class="output">Name,Age,Grade
+Binay,15,A
+Subigya,14,B
+Aurora,15,A</pre>
+
+<pre class="output">      Name  Age Grade
+0    Binay   15     A
+1  Subigya   14     B
+2   Aurora   15     A</pre>
+
+<p class="q"><span class="qnum">4(l).</span> Write a program to display the column names of a CSV file using Pandas.</p>
+
+<pre class="code">import pandas as pd
+
+df = pd.read_csv("students.csv")
+print(df.columns)</pre>
+
+<pre class="output">Index(['Name', 'Age', 'Grade'], dtype='object')</pre>
+
+<p>To see the names as an ordinary list:</p>
+<pre class="code">print(list(df.columns))</pre>
+<pre class="output">['Name', 'Age', 'Grade']</pre>
+
+<p class="q"><span class="qnum">4(m).</span> Write a program to display only one column (e.g., Name) from a CSV file.</p>
+
+<pre class="code">import pandas as pd
+
+df = pd.read_csv("students.csv")
+print(df["Name"])</pre>
+
+<pre class="output">0      Binay
+1    Subigya
+2     Aurora
+Name: Name, dtype: object</pre>
+
+<p class="q"><span class="qnum">4(m, second).</span> Write a Python program to display the first five rows of a CSV file.</p>
+
+<pre class="code">import pandas as pd
+
+df = pd.read_csv("students.csv")
+print(df.head())</pre>
+
+<pre class="output">      Name  Age Grade
+0    Binay   15     A
+1  Subigya   14     B
+2   Aurora   15     A</pre>
+
+<p>With only three rows, <code>head()</code> returns all of them. On a larger file it would return exactly five.</p>
+
+<p class="q"><span class="qnum">4(o).</span> Write a program to create a DataFrame with student marks and display it.</p>
+
+<pre class="code">import pandas as pd
+
+data = {
+    "Name": ["Binay", "Subigya", "Aurora", "Nidhi"],
+    "Marks": [85, 72, 91, 68]
+}
+
+df = pd.DataFrame(data)
+print(df)</pre>
+
+<pre class="output">      Name  Marks
+0    Binay     85
+1  Subigya     72
+2   Aurora     91
+3    Nidhi     68</pre>
+
+<p class="q"><span class="qnum">4(p).</span> Write a Python program to save a DataFrame into a CSV file using to_csv().</p>
+
+<pre class="code">import pandas as pd
+
+data = {
+    "Name": ["Binay", "Subigya", "Aurora", "Nidhi"],
+    "Marks": [85, 72, 91, 68]
+}
+
+df = pd.DataFrame(data)
+df.to_csv("marks.csv", index=False)
+
+print("DataFrame saved to marks.csv")</pre>
+
+<pre class="output">DataFrame saved to marks.csv</pre>
+
+<p>The file marks.csv now contains:</p>
+<pre class="output">Name,Marks
+Binay,85
+Subigya,72
+Aurora,91
+Nidhi,68</pre>
+
+<p class="q"><span class="qnum">4(q).</span> Write a program to read a CSV file and display only students whose marks are above 60.</p>
+
+<pre class="code">import pandas as pd
+
+df = pd.read_csv("marks.csv")
+above_sixty = df[df["Marks"] > 60]
+print(above_sixty)</pre>
+
+<pre class="output">      Name  Marks
+0    Binay     85
+1  Subigya     72
+2   Aurora     91
+3    Nidhi     68</pre>
+
+<p>With the sample file, every student is above 60, so all rows appear. On a larger file, only matching rows would be printed.</p>
+
+<p class="q"><span class="qnum">4(r).</span> Write a program using Pandas to add a new column to a CSV file.</p>
+
+<pre class="code">import pandas as pd
+
+df = pd.read_csv("marks.csv")
+df["Grade"] = ["A", "B", "A", "B"]
+df.to_csv("marks.csv", index=False)
+
+print("New column added and file updated.")
+print(df)</pre>
+
+<pre class="output">New column added and file updated.
+      Name  Marks Grade
+0    Binay     85     A
+1  Subigya     72     B
+2   Aurora     91     A
+3    Nidhi     68     B</pre>
+
+<p class="q"><span class="qnum">4(l, second).</span> Write a Python program to read a CSV file using the csv module instead of Pandas.</p>
+
+<pre class="code">import csv
+
+with open("marks.csv", "r") as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        print(row)</pre>
+
+<pre class="output">['Name', 'Marks', 'Grade']
+['Binay', '85', 'A']
+['Subigya', '72', 'B']
+['Aurora', '91', 'A']
+['Nidhi', '68', 'B']</pre>
+
+<p>Note that every value is a string. Arithmetic on Marks would require converting each entry with <code>int()</code> first.</p>
+
+<p class="q"><span class="qnum">4(m, third).</span> Write a program to explain why CSV files are useful in data storage and data analysis.</p>
+
+<pre class="code">"""
+CSV files are useful because:
+
+1. They are plain text, so they can be opened, read and edited
+   in any text editor or spreadsheet.
+2. They store tabular data in a simple, predictable structure:
+   one line per row, one comma per column boundary.
+3. They are small in size and easy to send over a network.
+4. Almost every programming language and data tool can read them.
+5. They are easy to generate from a program and easy to parse back.
+6. Pandas and the built-in csv module can both read them directly.
+
+These properties make CSV the most common format for sharing
+data between programs, between people and between systems.
+"""
+
+print("Explanation printed as a comment block in the code.")</pre>
+
+<pre class="output">Explanation printed as a comment block in the code.</pre>
+
+<p>In practice, CSV is chosen because it is the simplest format that still preserves the shape of a table. When a question asks why CSV is useful, the safe answers are portability, simplicity and universal support.</p>
+
+<hr class="sep">
+
+<p style="text-align:center; font-size:14px; font-style:italic;">End of notes and worked exercises.</p>
+
+</div>
+</body>
+</html>
