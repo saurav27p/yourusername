@@ -1,0 +1,9 @@
+title: "My Site"
+description: "Master template setup"
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
