@@ -1,3 +1,4 @@
+baseurl: "/yourusername"
 title: "My Site"
 description: "Master template setup"
 
@@ -6,4 +7,3 @@ defaults:
       path: ""
     values:
       layout: "default"
-
