@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} | {{ site.title }}</title>
+</head>
+<body style="font-family: sans-serif; margin: 0; padding: 0;">
+
+  {% include header.html %}
+
+  <main style="max-width: 800px; margin: 20px auto; padding: 0 15px;">
+    {{ content }}
+  </main>
+
+  {% include footer.html %}
+
+</body>
+</html>
+
